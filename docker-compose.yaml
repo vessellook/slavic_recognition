@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    restart: on-failure
+    env_file: .env
+    environment:
+      MEDIA_ROOT: /mnt/media
+      STATIC_ROOT: /mnt/static
+    volumes:
+      - "./app:/usr/src/app"
+      - "${DOCKER_HOST_MEDIA_PATH:?нужно указать путь до media}:/mnt/media"
+      - "${DOCKER_HOST_STATIC_PATH:?нужно указать путь до статики}:/mnt/static"
+    ports:
+      - "${DOCKER_HOST_DEV_APP_PORT:?порт, на котором надо запускать приложение}:80"
+    command: ./manage.py runserver 0.0.0.0:80
+
+  postgres:
+    image: postgres:14.2
+    restart: on-failure
+    volumes:
+      - "${DOCKER_HOST_POSTGRES_PATH:?нужно указать монтируемую папку для PostgreSQL}:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?название базы данных PostgreSQL}
+      POSTGRES_USER: ${POSTGRES_USER:?имя пользователя PostgreSQL}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?пароль от PostgreSQL}
