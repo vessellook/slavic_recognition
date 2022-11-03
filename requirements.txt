@@ -1,2 +1,8 @@
 Django==4.1
 psycopg2-binary==2.9.3
+scipy==1.9.3
+numpy==1.23.4
+PyMaxflow==1.2.13
+opencv-python-headless==4.6.0.66
+djangorestframework==3.13.1
+drf_yasg==1.21.3
